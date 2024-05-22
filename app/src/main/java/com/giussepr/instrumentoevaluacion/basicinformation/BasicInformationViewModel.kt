@@ -1,6 +1,7 @@
 package com.giussepr.instrumentoevaluacion.basicinformation
 
 import androidx.lifecycle.ViewModel
+import com.giussepr.instrumentoevaluacion.data.InstrumentDataSource
 import com.giussepr.instrumentoevaluacion.uicomponents.TextFieldState
 import com.giussepr.instrumentoevaluacion.uicomponents.selector.SelectorItem
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -8,7 +9,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class BasicInformationViewModel @Inject constructor() : ViewModel() {
+class BasicInformationViewModel @Inject constructor(
+    private val instrumentDataSource: InstrumentDataSource
+) : ViewModel() {
 
     var viewState = MutableStateFlow(BasicInformationViewState())
         private set
@@ -264,7 +267,24 @@ class BasicInformationViewModel @Inject constructor() : ViewModel() {
 
             is BasicInformationEvent.SaveBasicInformation -> {
                 if (isFormValid()) {
-                    // Save basic information
+                    instrumentDataSource.saveBasicInformation(
+                        viewState.value.questionOne,
+                        viewState.value.questionTwo,
+                        viewState.value.questionThree,
+                        viewState.value.questionFour,
+                        viewState.value.questionFive,
+                        viewState.value.questionSix,
+                        viewState.value.questionSeven,
+                        viewState.value.questionEight,
+                        viewState.value.questionNine,
+                        viewState.value.questionTen,
+                        viewState.value.questionEleven,
+                        viewState.value.questionTwelve,
+                        viewState.value.questionThirteen,
+                        viewState.value.questionFourteen,
+                        viewState.value.questionFifteen,
+                        viewState.value.questionSixteen
+                    )
                 }
             }
 

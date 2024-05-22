@@ -1,6 +1,7 @@
 package com.giussepr.instrumentoevaluacion.information
 
 import androidx.lifecycle.ViewModel
+import com.giussepr.instrumentoevaluacion.data.InstrumentDataSource
 import com.giussepr.instrumentoevaluacion.uicomponents.TextFieldState
 import com.giussepr.instrumentoevaluacion.uicomponents.selector.SelectorItem
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -9,7 +10,9 @@ import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
-class InformationScreenViewModel @Inject constructor() : ViewModel() {
+class InformationScreenViewModel @Inject constructor(
+    private val instrumentDataSource: InstrumentDataSource
+) : ViewModel() {
 
     var viewState = MutableStateFlow(InformationScreenViewState())
         private set
@@ -137,7 +140,14 @@ class InformationScreenViewModel @Inject constructor() : ViewModel() {
 
             is InformationScreenUiEvent.SaveInformation -> {
                 if (isFormValid()) {
-                    // Save information
+                    instrumentDataSource.saveEntityInformation(
+                        viewState.value.name,
+                        viewState.value.role!!,
+                        viewState.value.area,
+                        viewState.value.entityName,
+                        viewState.value.entityUrl,
+                        viewState.value.entityIdentifier
+                    )
                 }
             }
         }

@@ -42,6 +42,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.giussepr.instrumentoevaluacion.R
+import com.giussepr.instrumentoevaluacion.navigation.AppDirections
 import com.giussepr.instrumentoevaluacion.ui.theme.InstrumentoEvaluacionTheme
 import com.giussepr.instrumentoevaluacion.uicomponents.AppLabeledOutlinedTextField
 import com.giussepr.instrumentoevaluacion.uicomponents.TextFieldState
@@ -414,6 +415,7 @@ fun BasicInformationScreen(navController: NavHostController) {
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
                     viewModel.onUiEvent(BasicInformationEvent.SaveBasicInformation)
+                    navController.navigate(AppDirections.QuestionsByRoleForm.route)
                 }) {
                 Text(text = "Guardar")
             }

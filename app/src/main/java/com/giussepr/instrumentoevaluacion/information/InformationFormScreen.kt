@@ -183,7 +183,7 @@ fun InformationFormScreen(navController: NavHostController) {
             Button(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
-                    //viewModel.onUiEvent(InformationScreenUiEvent.SaveInformation)
+                    viewModel.onUiEvent(InformationScreenUiEvent.SaveInformation)
                     navController.navigate(AppDirections.BasicInformationForm.route)
                 }) {
                 Text(text = "Guardar")
