@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.giussepr.instrumentoevaluacion.basicinformation.BasicInformationScreen
 import com.giussepr.instrumentoevaluacion.information.InformationFormScreen
 import com.giussepr.instrumentoevaluacion.splash.SplashScreen
 
@@ -21,6 +22,10 @@ fun AppNavHost(
 
         composable(AppDirections.InformationForm.route) {
             InformationFormScreen(navController = navController)
+        }
+
+        composable(AppDirections.BasicInformationForm.route) {
+            BasicInformationScreen(navController = navController)
         }
     }
 }

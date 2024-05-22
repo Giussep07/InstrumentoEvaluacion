@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">InstrumentoEvaluacion</string>
+    <string name="answer">Respuesta</string>
+    <string name="question_one">Misión</string>
+    <string name="question_two">Mapa de Procesos</string>
+    <string name="question_three">Políticas de seguridad de la información formalizada y firmada</string>
+    <string name="question_four">Organigrama, roles y responsabilidades de seguridad de la información, asignación del recurso humano y comunicación de roles y responsabilidades.</string>
+    <string name="question_five">Documento con el resultado de la autoevaluación realizada a la Entidad, de la gestión de la seguridad y privacidad de la información e infraestructura de red de comunicaciones (IPv4/IPv6), revisado y aprobado por la alta dirección</string>
+    <string name="question_six">Documento con el resultado de la herramienta de la encuesta de diagnóstico de seguridad y privacidad de la información, revisado, aprobado y aceptado por la alta dirección</string>
+    <string name="question_seven">Documento con el resultado de la estratificación de la entidad, aceptado y aprobado por la alta dirección</string>
+    <string name="question_eight">Metodología de Gestión de riesgos</string>
+    <string name="question_nine">Riesgos identificados y valorados de acuerdo a la metodología</string>
+    <string name="question_ten">Planes de tratamiento de los riesgos</string>
+    <string name="question_eleven">Procedimiento de verificación de antecedentes para candidatos a un empleo en la entidad</string>
+    <string name="question_twelve">Inventario de activos de información clasificados, de la entidad, revisado y aprobado por la alta dirección</string>
+    <string name="question_thirteen">Inventario de áreas de procesamiento de información y telecomunicaciones</string>
+    <string name="question_fourteen">Diagrama de red de alto nivel o arquitectura de TI</string>
+    <string name="question_fifteen">Plan de continuidad de  la Entidad aprobado</string>
+    <string name="question_sixteen">Procedimientos, manuales, guías, directrices, lineamientos, estándares, instructivos relacionados con seguridad de la información, el modelo de seguridad y privacidad de la información de MinTic y Gobierno en Línea.</string>
 </resources>

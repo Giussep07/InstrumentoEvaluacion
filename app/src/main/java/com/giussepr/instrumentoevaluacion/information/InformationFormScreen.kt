@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.giussepr.instrumentoevaluacion.navigation.AppDirections
 import com.giussepr.instrumentoevaluacion.ui.theme.InstrumentoEvaluacionTheme
 import com.giussepr.instrumentoevaluacion.uicomponents.AppOutlinedTextField
 import com.giussepr.instrumentoevaluacion.uicomponents.TextFieldState
@@ -182,7 +183,8 @@ fun InformationFormScreen(navController: NavHostController) {
             Button(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
-                    viewModel.onUiEvent(InformationScreenUiEvent.SaveInformation)
+                    //viewModel.onUiEvent(InformationScreenUiEvent.SaveInformation)
+                    navController.navigate(AppDirections.BasicInformationForm.route)
                 }) {
                 Text(text = "Guardar")
             }
