@@ -12,6 +12,7 @@ dagger-hilt = "2.48"
 nav_compose = "2.8.0-beta01"
 serialization = "1.6.3"
 lottieVersion = "6.4.0"
+hiltNavigationCompose = "1.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -33,6 +34,7 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "dagger-hilt" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "dagger-hilt" }
 hilt-core = { module = "com.google.dagger:hilt-core", version.ref = "dagger-hilt" }
+hilt-navigation = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 
 ## Compose navigation
 compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "nav_compose" }

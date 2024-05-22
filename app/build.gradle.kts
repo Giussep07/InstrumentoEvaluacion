@@ -65,6 +65,7 @@ dependencies {
 
     // hilt
     implementation(libs.hilt.android)
+    implementation(libs.hilt.navigation)
     kapt(libs.hilt.compiler)
 
     // compose navigation
