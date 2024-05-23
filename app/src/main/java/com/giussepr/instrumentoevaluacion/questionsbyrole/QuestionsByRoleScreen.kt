@@ -11,6 +11,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -99,14 +100,11 @@ fun QuestionsByRoleScreen(navController: NavHostController) {
                 style = MaterialTheme.typography.titleLarge,
             )
             state.questions.forEach { question: Question ->
-                var answer by remember {
-                    mutableStateOf("")
-                }
                 AppLabeledOutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
-                    value = answer,
-                    onValueChange = {
-                        answer = it
+                    value = question.answer,
+                    onValueChange = { value ->
+                        viewModel.onUiEvent(QuestionByRoleViewEvent.AnswerChanged(question, value))
                     },
                     placeholder = "Pregunta",
                     label = question.question,
@@ -114,8 +112,17 @@ fun QuestionsByRoleScreen(navController: NavHostController) {
                         keyboardType = KeyboardType.Text,
                         imeAction = ImeAction.Done
                     ),
-                    textFieldState = TextFieldState.Default
+                    textFieldState = question.questionTextFieldState
                 )
+            }
+            // Save Button
+            Button(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = {
+                    viewModel.onUiEvent(QuestionByRoleViewEvent.SaveClicked)
+                    //navController.navigate(AppDirections.QuestionsByRoleForm.route)
+                }) {
+                Text(text = "Guardar")
             }
         }
     }

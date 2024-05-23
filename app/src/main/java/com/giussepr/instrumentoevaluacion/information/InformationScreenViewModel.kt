@@ -77,6 +77,13 @@ class InformationScreenViewModel @Inject constructor(
             }
         }
 
+        viewState.update {
+            it.copy(
+                isFormValid = isFormValid,
+                navigationCompleted = false
+            )
+        }
+
         return isFormValid
     }
 
@@ -150,6 +157,12 @@ class InformationScreenViewModel @Inject constructor(
                     )
                 }
             }
+
+            is InformationScreenUiEvent.CompleteNavigation -> {
+                viewState.update {
+                    it.copy(navigationCompleted = true)
+                }
+            }
         }
     }
 }
@@ -168,6 +181,8 @@ data class InformationScreenViewState(
     val entityNameTextFieldState: TextFieldState = TextFieldState.Default,
     val entityUrlTextFieldState: TextFieldState = TextFieldState.Default,
     val entityIdentifierTextFieldState: TextFieldState = TextFieldState.Default,
+    val isFormValid: Boolean = false,
+    val navigationCompleted: Boolean = false
 )
 
 sealed class InformationScreenUiEvent {
@@ -179,6 +194,7 @@ sealed class InformationScreenUiEvent {
     data class OnEntityIdentifierChanged(val entityIdentifier: String) : InformationScreenUiEvent()
     data class OnRoleSelected(val role: Role) : InformationScreenUiEvent()
     data object SaveInformation : InformationScreenUiEvent()
+    data object CompleteNavigation: InformationScreenUiEvent()
 }
 
 data class Role(

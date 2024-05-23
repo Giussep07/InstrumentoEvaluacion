@@ -61,6 +61,13 @@ fun BasicInformationScreen(navController: NavHostController) {
         viewModel.onUiEvent(BasicInformationEvent.LoadEntityTypes)
     }
 
+    LaunchedEffect(state.isFormValid, state.navigationCompleted) {
+        if (state.isFormValid && state.navigationCompleted.not()) {
+            navController.navigate(AppDirections.QuestionsByRoleForm.route)
+            viewModel.onUiEvent(BasicInformationEvent.CompleteNavigation)
+        }
+    }
+
     Scaffold(
         modifier = Modifier
             .fillMaxSize(),
@@ -415,7 +422,6 @@ fun BasicInformationScreen(navController: NavHostController) {
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
                     viewModel.onUiEvent(BasicInformationEvent.SaveBasicInformation)
-                    navController.navigate(AppDirections.QuestionsByRoleForm.route)
                 }) {
                 Text(text = "Guardar")
             }

@@ -51,6 +51,13 @@ fun InformationFormScreen(navController: NavHostController) {
         viewModel.onUiEvent(InformationScreenUiEvent.GetRoles)
     }
 
+    LaunchedEffect(state.isFormValid, state.navigationCompleted) {
+        if (state.isFormValid && state.navigationCompleted.not()) {
+            navController.navigate(AppDirections.BasicInformationForm.route)
+            viewModel.onUiEvent(InformationScreenUiEvent.CompleteNavigation)
+        }
+    }
+
     Scaffold(
         modifier = Modifier
             .fillMaxSize(),
@@ -184,7 +191,6 @@ fun InformationFormScreen(navController: NavHostController) {
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
                     viewModel.onUiEvent(InformationScreenUiEvent.SaveInformation)
-                    navController.navigate(AppDirections.BasicInformationForm.route)
                 }) {
                 Text(text = "Guardar")
             }

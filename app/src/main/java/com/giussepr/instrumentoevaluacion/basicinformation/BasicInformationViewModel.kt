@@ -6,6 +6,7 @@ import com.giussepr.instrumentoevaluacion.uicomponents.TextFieldState
 import com.giussepr.instrumentoevaluacion.uicomponents.selector.SelectorItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
@@ -137,6 +138,13 @@ class BasicInformationViewModel @Inject constructor(
                 isFormValid = false
             }
 
+        }
+
+        viewState.update {
+            it.copy(
+                isFormValid = isFormValid,
+                navigationCompleted = false
+            )
         }
 
         return isFormValid
@@ -288,6 +296,10 @@ class BasicInformationViewModel @Inject constructor(
                 }
             }
 
+            is BasicInformationEvent.CompleteNavigation -> {
+                viewState.update { it.copy(navigationCompleted = true) }
+            }
+
         }
     }
 }
@@ -328,6 +340,8 @@ data class BasicInformationViewState(
     val questionFifteenTextFieldState: TextFieldState = TextFieldState.Default,
     val questionSixteen: String = "",
     val questionSixteenTextFieldState: TextFieldState = TextFieldState.Default,
+    val isFormValid: Boolean = false,
+    val navigationCompleted: Boolean = false
 )
 
 sealed class BasicInformationEvent {
@@ -350,6 +364,7 @@ sealed class BasicInformationEvent {
     data class QuestionFifteenChanged(val questionFifteen: String) : BasicInformationEvent()
     data class QuestionSixteenChanged(val questionSixteen: String) : BasicInformationEvent()
     data object SaveBasicInformation : BasicInformationEvent()
+    data object CompleteNavigation : BasicInformationEvent()
 }
 
 data class EntityType(
