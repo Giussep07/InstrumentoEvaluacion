@@ -32,7 +32,8 @@ class QuestionByRoleViewModel @Inject constructor(
         viewState.update {
             it.copy(
                 questions = questions.toMutableList(),
-                isFormValid = isFormValid
+                isFormValid = isFormValid,
+                navigationCompleted = false
             )
         }
 
@@ -67,7 +68,13 @@ class QuestionByRoleViewModel @Inject constructor(
 
             is QuestionByRoleViewEvent.SaveClicked -> {
                 if (isFormValid()) {
-                    // Save data
+                    instrumentDataSource.saveQuestionAnswers(viewState.value.questions)
+                }
+            }
+
+            is QuestionByRoleViewEvent.CompleteNavigation -> {
+                viewState.update {
+                    it.copy(navigationCompleted = true)
                 }
             }
         }
@@ -77,13 +84,15 @@ class QuestionByRoleViewModel @Inject constructor(
 data class QuestionByRoleViewState(
     var questions: MutableList<Question> = mutableListOf(),
     val role: Role? = null,
-    val isFormValid: Boolean = false
+    val isFormValid: Boolean = false,
+    val navigationCompleted: Boolean = false
 )
 
 sealed class QuestionByRoleViewEvent {
     data object LoadRoles : QuestionByRoleViewEvent()
     data class AnswerChanged(val question: Question, val answer: String) : QuestionByRoleViewEvent()
     data object SaveClicked : QuestionByRoleViewEvent()
+    data object CompleteNavigation : QuestionByRoleViewEvent()
 }
 
 data class Question(

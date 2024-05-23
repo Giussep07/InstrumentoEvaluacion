@@ -29,6 +29,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Devices
@@ -37,6 +38,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.giussepr.instrumentoevaluacion.R
+import com.giussepr.instrumentoevaluacion.navigation.AppDirections
 import com.giussepr.instrumentoevaluacion.ui.theme.InstrumentoEvaluacionTheme
 import com.giussepr.instrumentoevaluacion.uicomponents.AppLabeledOutlinedTextField
 import com.giussepr.instrumentoevaluacion.uicomponents.TextFieldState
@@ -49,6 +52,13 @@ fun QuestionsByRoleScreen(navController: NavHostController) {
 
     LaunchedEffect(key1 = Unit) {
         viewModel.onUiEvent(QuestionByRoleViewEvent.LoadRoles)
+    }
+
+    LaunchedEffect(state.isFormValid, state.navigationCompleted) {
+        if (state.isFormValid && state.navigationCompleted.not()) {
+            navController.navigate(AppDirections.EvaluationScreen.route)
+            viewModel.onUiEvent(QuestionByRoleViewEvent.CompleteNavigation)
+        }
     }
 
     Scaffold(
@@ -106,13 +116,14 @@ fun QuestionsByRoleScreen(navController: NavHostController) {
                     onValueChange = { value ->
                         viewModel.onUiEvent(QuestionByRoleViewEvent.AnswerChanged(question, value))
                     },
-                    placeholder = "Pregunta",
+                    placeholder = stringResource(id = R.string.answer),
                     label = question.question,
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Text,
                         imeAction = ImeAction.Done
                     ),
-                    textFieldState = question.questionTextFieldState
+                    textFieldState = question.questionTextFieldState,
+                    maxLines = 5
                 )
             }
             // Save Button
@@ -120,7 +131,6 @@ fun QuestionsByRoleScreen(navController: NavHostController) {
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
                     viewModel.onUiEvent(QuestionByRoleViewEvent.SaveClicked)
-                    //navController.navigate(AppDirections.QuestionsByRoleForm.route)
                 }) {
                 Text(text = "Guardar")
             }
