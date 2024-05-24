@@ -1,16 +1,23 @@
 package com.giussepr.instrumentoevaluacion.evaluation
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.giussepr.instrumentoevaluacion.api.InstrumentApi
+import com.giussepr.instrumentoevaluacion.data.BasicInformation
+import com.giussepr.instrumentoevaluacion.data.EntityInformation
+import com.giussepr.instrumentoevaluacion.data.InstrumentData
 import com.giussepr.instrumentoevaluacion.data.InstrumentDataSource
 import com.giussepr.instrumentoevaluacion.uicomponents.TextFieldState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class EvaluationViewModel @Inject constructor(
-    private val instrumentDataSource: InstrumentDataSource
+    private val instrumentDataSource: InstrumentDataSource,
+    private val instrumentApi: InstrumentApi
 ) : ViewModel() {
 
     var viewState = MutableStateFlow(EvaluationViewState())
@@ -328,22 +335,36 @@ class EvaluationViewModel @Inject constructor(
                 if (isFormValid()) {
                     instrumentDataSource.saveEvaluation(
                         mapOf(
-                            "Políticas de seguridad de la información" to (viewState.value.firstItem.toIntOrNull() ?: 0),
-                            "Organización de la seguridad de la información" to (viewState.value.secondItem.toIntOrNull() ?: 0),
-                            "Seguridad de los recursos humanos" to (viewState.value.thirdItem.toIntOrNull() ?: 0),
+                            "Políticas de seguridad de la información" to (viewState.value.firstItem.toIntOrNull()
+                                ?: 0),
+                            "Organización de la seguridad de la información" to (viewState.value.secondItem.toIntOrNull()
+                                ?: 0),
+                            "Seguridad de los recursos humanos" to (viewState.value.thirdItem.toIntOrNull()
+                                ?: 0),
                             "Gestión de activos" to (viewState.value.fourthItem.toIntOrNull() ?: 0),
                             "Control de acceso" to (viewState.value.fifthItem.toIntOrNull() ?: 0),
                             "Criptografía" to (viewState.value.sixthItem.toIntOrNull() ?: 0),
-                            "Seguridad física y del entorno" to (viewState.value.seventhItem.toIntOrNull() ?: 0),
-                            "Seguridad de las operaciones" to (viewState.value.eighthItem.toIntOrNull() ?: 0),
-                            "Seguridad de las comunicaciones" to (viewState.value.ninthItem.toIntOrNull() ?: 0),
-                            "Adquisición, desarrollo y mantenimiento de sistemas" to (viewState.value.tenthItem.toIntOrNull() ?: 0),
-                            "Relaciones con los proveedores" to (viewState.value.eleventhItem.toIntOrNull() ?: 0),
-                            "Gestión de incidentes de seguridad de la información" to (viewState.value.twelfthItem.toIntOrNull() ?: 0),
-                            "Aspectos de seguridad de la información de la gestión de la continuidad del negocio" to (viewState.value.thirteenthItem.toIntOrNull() ?: 0),
+                            "Seguridad física y del entorno" to (viewState.value.seventhItem.toIntOrNull()
+                                ?: 0),
+                            "Seguridad de las operaciones" to (viewState.value.eighthItem.toIntOrNull()
+                                ?: 0),
+                            "Seguridad de las comunicaciones" to (viewState.value.ninthItem.toIntOrNull()
+                                ?: 0),
+                            "Adquisición, desarrollo y mantenimiento de sistemas" to (viewState.value.tenthItem.toIntOrNull()
+                                ?: 0),
+                            "Relaciones con los proveedores" to (viewState.value.eleventhItem.toIntOrNull()
+                                ?: 0),
+                            "Gestión de incidentes de seguridad de la información" to (viewState.value.twelfthItem.toIntOrNull()
+                                ?: 0),
+                            "Aspectos de seguridad de la información de la gestión de la continuidad del negocio" to (viewState.value.thirteenthItem.toIntOrNull()
+                                ?: 0),
                             "Cumplimiento" to (viewState.value.fourteenthItem.toIntOrNull() ?: 0)
                         )
                     )
+
+                    viewModelScope.launch {
+                        instrumentApi.sendInstrumentData(instrumentDataSource.getInstrumentData())
+                    }
                 }
             }
         }
