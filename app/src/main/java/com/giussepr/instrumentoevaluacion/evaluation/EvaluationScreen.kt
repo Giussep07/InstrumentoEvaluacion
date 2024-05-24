@@ -22,6 +22,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -36,6 +37,7 @@ import androidx.core.text.isDigitsOnly
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.giussepr.instrumentoevaluacion.navigation.AppDirections
 import com.giussepr.instrumentoevaluacion.ui.theme.InstrumentoEvaluacionTheme
 import com.giussepr.instrumentoevaluacion.uicomponents.AppOutlinedTextField
 
@@ -46,6 +48,13 @@ fun EvaluationScreen(navController: NavHostController) {
     val state by viewModel.viewState.collectAsState()
 
     val focusManager = LocalFocusManager.current
+
+    LaunchedEffect(state.isFormValid, state.navigationCompleted) {
+        if (state.isFormValid && state.navigationCompleted.not()) {
+            navController.navigate(AppDirections.ReportCreatedScreen.route)
+            viewModel.onUiEvent(EvaluationViewEvent.CompleteNavigation)
+        }
+    }
 
     Scaffold(
         modifier = Modifier

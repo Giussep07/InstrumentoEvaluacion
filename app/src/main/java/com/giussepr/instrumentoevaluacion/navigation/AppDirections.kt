@@ -6,4 +6,5 @@ sealed class AppDirections(val route: String) {
     data object BasicInformationForm : AppDirections("basic_information_form")
     data object QuestionsByRoleForm : AppDirections("questions_by_role_form")
     data object EvaluationScreen: AppDirections("evaluation_screen")
+    data object ReportCreatedScreen: AppDirections("report_created_screen")
 }

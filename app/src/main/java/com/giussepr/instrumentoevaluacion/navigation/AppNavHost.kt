@@ -8,6 +8,7 @@ import com.giussepr.instrumentoevaluacion.basicinformation.BasicInformationScree
 import com.giussepr.instrumentoevaluacion.evaluation.EvaluationScreen
 import com.giussepr.instrumentoevaluacion.information.InformationFormScreen
 import com.giussepr.instrumentoevaluacion.questionsbyrole.QuestionsByRoleScreen
+import com.giussepr.instrumentoevaluacion.reportcreated.ReportCreatedScreen
 import com.giussepr.instrumentoevaluacion.splash.SplashScreen
 
 @Composable
@@ -36,6 +37,10 @@ fun AppNavHost(
 
         composable(AppDirections.EvaluationScreen.route) {
             EvaluationScreen(navController = navController)
+        }
+
+        composable(AppDirections.ReportCreatedScreen.route) {
+            ReportCreatedScreen(navController = navController)
         }
     }
 }

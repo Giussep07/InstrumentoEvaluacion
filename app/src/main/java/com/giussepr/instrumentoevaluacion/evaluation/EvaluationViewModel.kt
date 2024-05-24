@@ -3,9 +3,6 @@ package com.giussepr.instrumentoevaluacion.evaluation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.giussepr.instrumentoevaluacion.api.InstrumentApi
-import com.giussepr.instrumentoevaluacion.data.BasicInformation
-import com.giussepr.instrumentoevaluacion.data.EntityInformation
-import com.giussepr.instrumentoevaluacion.data.InstrumentData
 import com.giussepr.instrumentoevaluacion.data.InstrumentDataSource
 import com.giussepr.instrumentoevaluacion.uicomponents.TextFieldState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -124,6 +121,13 @@ class EvaluationViewModel @Inject constructor(
                     it.copy(fourteenthItemTextFieldState = TextFieldState.Error("Campo requerido"))
                 }
             }
+        }
+
+        viewState.update {
+            it.copy(
+                isFormValid = isFormValid,
+                navigationCompleted = false
+            )
         }
 
         return isFormValid
@@ -367,6 +371,12 @@ class EvaluationViewModel @Inject constructor(
                     }
                 }
             }
+
+            is EvaluationViewEvent.CompleteNavigation -> {
+                viewState.update {
+                    it.copy(navigationCompleted = true)
+                }
+            }
         }
     }
 }
@@ -399,7 +409,9 @@ data class EvaluationViewState(
     val eleventhItemTextFieldState: TextFieldState = TextFieldState.Default,
     val twelfthItemTextFieldState: TextFieldState = TextFieldState.Default,
     val thirteenthItemTextFieldState: TextFieldState = TextFieldState.Default,
-    val fourteenthItemTextFieldState: TextFieldState = TextFieldState.Default
+    val fourteenthItemTextFieldState: TextFieldState = TextFieldState.Default,
+    val isFormValid: Boolean = false,
+    val navigationCompleted: Boolean = false
 )
 
 sealed class EvaluationViewEvent {
@@ -418,5 +430,6 @@ sealed class EvaluationViewEvent {
     data class ThirteenthEvaluationChanged(val value: String) : EvaluationViewEvent()
     data class FourteenthEvaluationChanged(val value: String) : EvaluationViewEvent()
     data object SaveClicked : EvaluationViewEvent()
+    data object CompleteNavigation : EvaluationViewEvent()
 }
 
