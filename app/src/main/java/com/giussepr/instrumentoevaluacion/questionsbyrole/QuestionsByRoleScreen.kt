@@ -24,9 +24,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -42,7 +39,6 @@ import com.giussepr.instrumentoevaluacion.R
 import com.giussepr.instrumentoevaluacion.navigation.AppDirections
 import com.giussepr.instrumentoevaluacion.ui.theme.InstrumentoEvaluacionTheme
 import com.giussepr.instrumentoevaluacion.uicomponents.AppLabeledOutlinedTextField
-import com.giussepr.instrumentoevaluacion.uicomponents.TextFieldState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -106,7 +102,7 @@ fun QuestionsByRoleScreen(navController: NavHostController) {
         ) {
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = "Preguntas para el rol: ${state.role?.name.orEmpty()}",
+                text = "Preguntas para el rol: ${state.role?.value.orEmpty()}",
                 style = MaterialTheme.typography.titleLarge,
             )
             state.questions.forEach { question: Question ->

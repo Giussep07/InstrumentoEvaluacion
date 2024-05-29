@@ -33,8 +33,8 @@ class InstrumentDataSource {
     var questionSixteen: String = ""
 
     // Questions by role
-    private val questions: Map<String, List<Question>> = mapOf(
-        "Control interno" to listOf(
+    private val questions: Map<Role, List<Question>> = mapOf(
+        Role.CONTROL_INTERNO to listOf(
             Question(
                 "Investigue la forma como se realizan revisiones independientes (por personas diferentes o no vinculadas a un proceso o área que se revisa), de la conveniencia, la adecuación y la eficacia continuas de la  gestionar la seguridad de la información. \n" +
                         "Para esto solicite:\n" +
@@ -48,39 +48,12 @@ class InstrumentDataSource {
                         "3) Verifique si los sistemas de información son revisados regularmente para asegurar el cumplimiento de las normas de seguridad de la información."
             )
         ),
-        "Gestión humana" to listOf(
-            Question(
-                "Revise el proceso de selección de los funcionarios y contratistas, verifique que se lleva a cabo una revisión de: \n" +
-                        "a) Referencias satisfactorias\n" +
-                        "b) Verificación de la de la hoja de vida del solicitante incluyendo certificaciones académicas y laborales; \n" +
-                        "c) Confirmación de las calificaciones académicas y profesionales declaradas; \n" +
-                        "d) Una verificación más detallada, como la de la información crediticia o de antecedentes penales. \n" +
-                        "Cuando un individuo es contratado para un rol de seguridad de la información específico, las organizaciones deberían asegurar que el candidato tenga la competencia necesaria para desempeñar el rol de seguridad; \n" +
-                        "e) sea confiable para desempeñar el rol, especialmente si es crítico para la organización. \n" +
-                        "f) Cuando un trabajo, ya sea una asignación o una promoción, implique que la persona tenga acceso a las instalaciones de procesamiento de información, y en particular, si ahí se maneja información confidencial, por ejemplo, información financiera o información muy confidencial, la organización debería también considerar verificaciones adicionales más detalladas (por ejemplo estudio de seguridad, polígrafo, visita domiciliaria)\n" +
-                        "g) También se debería asegurar un proceso de selección para contratistas. En estos casos, el acuerdo entre la organización y el contratista debería especificar las responsabilidades por la realización de la selección, y los procedimientos de notificación que es necesario seguir si la selección no se ha finalizado, o si los resultados son motivo de duda o inquietud. \n" +
-                        "h) La información sobre todos los candidatos que se consideran para cargos dentro de la organización, se debería recolectar y manejar apropiadamente de acuerdo con la ley de protección de datos personales."
-            ),
-        ),
-        "Líder de Proceso 1" to listOf(
+        Role.LIDER_DE_PROCESO_1 to listOf(
             Question("Pregunta 1"),
             Question("Pregunta 2"),
             Question("Pregunta 3"),
         ),
-        "Líder de Proceso 2" to listOf(
-            Question("Pregunta 1"),
-            Question("Pregunta 2"),
-            Question("Pregunta 3"),
-            Question("Pregunta 4"),
-        ),
-        "Líder de Proceso 3" to listOf(
-            Question("Pregunta 1"),
-            Question("Pregunta 2"),
-            Question("Pregunta 3"),
-            Question("Pregunta 4"),
-            Question("Pregunta 5"),
-        ),
-        "Responsable de compras y adquisiciones" to listOf(
+        Role.RESPONSABLE_DE_COMPRAS_Y_ADQUISICIONES to listOf(
             Question(
                 "1) Solicite la política de seguridad de la información para las relaciones con los proveedores, que indique los requisitos de SI para mitigar los riesgos asociados con el acceso de proveedores a los activos de la organización, esta política debe reflejarse en los acuerdos con los proveedores que deben estar documentados.\n" +
                         "2) Verifique en la muestra de  proveedores  con acceso a los activos de información (no necesariamente son proveedores de tecnología de la información, por ejemplo pueden ser proveedores que tengan por ejemplo un proceso de nomina en outsourcing), se hayan suscrito acuerdos (ANS) formales donde se establezcan y acuerden todos los requisitos de seguridad de la información pertinentes con cada proveedor.\n" +
@@ -91,7 +64,7 @@ class InstrumentDataSource {
                         "2) Indague y evidencie como se gestionan los cambios en el suministro de servicios por parte de los proveedores, incluido el mantenimiento y la mejora de las políticas, procedimientos y controles de seguridad de la información existentes , teniendo en cuenta la criticidad de la información, sistemas y procesos del negocio involucrados, los incidentes de seguridad de la información y la revaloración de los riesgos."
             ),
         ),
-        "Responsable de la continuidad" to listOf(
+        Role.RESPONSABLE_DE_LA_CONTINUIDAD to listOf(
             Question(
                 "Indagar si la Entidad cuenta con un BCP (Bussines Continuity Plan) o DRP (Disaster Recovery Plan).\n" +
                         "Determine si aplica para procesos críticos solamente o se han incluido otros procesos o por lo menos se ha reconocido la necesidad de ampliarlo a otros procesos (para determinar el nivel de madurez)\n" +
@@ -121,17 +94,7 @@ class InstrumentDataSource {
                         "Solicite si aplica las pruebas aplicadas para asegurar que un componente redundante funciona de la forma prevista durante una emergencia o falla."
             ),
         ),
-        "Responsable de la seguridad física" to listOf(
-            Question("Pregunta 1"),
-            Question("Pregunta 2"),
-            Question("Pregunta 3"),
-            Question("Pregunta 4"),
-            Question("Pregunta 5"),
-            Question("Pregunta 6"),
-            Question("Pregunta 7"),
-            Question("Pregunta 8"),
-        ),
-        "Responsable de SI" to listOf(
+        Role.RESPONSABLE_DE_SI to listOf(
             Question(
                 "Solicite la política de seguridad de la información de la entidad y evalúe:\n" +
                         "a) Si se definen los objetivos, alcance de la política\n" +
@@ -197,7 +160,7 @@ class InstrumentDataSource {
                         "Solicite evidencia de las últimas pruebas realizadas, sus resultados y seguimiento para asegurar que las brechas de seguridad fueron solucionadas."
             ),
         ),
-        "Responsable de TICs" to listOf(
+        Role.RESPONSABLE_DE_TICS to listOf(
             Question(
                 "Definición de teletrabajo: El teletrabajo hace referencia a todas las formas de trabajo por fuera de la oficina, incluidos los entornos de trabajo no tradicionales, a los que se denomina \"trabajo a distancia\", \"lugar de trabajo flexible\", \"trabajo remoto\" y ambientes de \"trabajo virtual\".\n" +
                         "\n" +
@@ -244,33 +207,11 @@ class InstrumentDataSource {
                         "4) Indague si se tiene un inventario de software instalado y se compara con el número de licencias adquiridas para asegurar que no se incumplen los derechos de propiedad intelectual. Tenga en cuenta los controles que deben existir para asegurar que no se exceda ningún número máximo de usuarios permitido dentro de la licencia."
             ),
         ),
-        "Calidad" to listOf(
-            Question("Pregunta 1"),
-            Question("Pregunta 2"),
-            Question("Pregunta 3"),
-            Question("Pregunta 4"),
-            Question("Pregunta 5"),
-            Question("Pregunta 6"),
-            Question("Pregunta 7"),
-            Question("Pregunta 8"),
-            Question("Pregunta 9"),
-            Question("Pregunta 10"),
-            Question("Pregunta 11"),
-        )
     )
     private var questionsAnswers: List<Question> = listOf()
 
     // Evaluation
     private var evaluation: Map<String, Int> = mapOf()
-
-    private val roles = listOf(
-        Role("Control interno"),
-        Role("Líder de Proceso 1"),
-        Role("Responsable de compras y adquisiciones"),
-        Role("Responsable de la continuidad"),
-        Role("Responsable de SI"),
-        Role("Responsable de TICs"),
-    )
 
     private val subjects = listOf(
         Subject("Revisiones de seguridad de la información"),
@@ -329,7 +270,7 @@ class InstrumentDataSource {
     }
 
     fun getQuestionsByRole(): List<Question> {
-        return questions[role?.name.orEmpty()] ?: emptyList()
+        return questions[role] ?: emptyList()
     }
 
     fun saveQuestionAnswers(questions: List<Question>) {
@@ -374,7 +315,7 @@ class InstrumentDataSource {
     }
 
     fun getRoles(): List<Role> {
-        return roles
+        return Role.entries
     }
 
     fun getSubjects(): List<Subject> {
