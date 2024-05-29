@@ -1,6 +1,7 @@
 package com.giussepr.instrumentoevaluacion.data
 
-import com.giussepr.instrumentoevaluacion.information.Role
+import com.giussepr.instrumentoevaluacion.model.Role
+import com.giussepr.instrumentoevaluacion.model.Subject
 import com.giussepr.instrumentoevaluacion.questionsbyrole.Question
 
 class InstrumentDataSource {
@@ -8,7 +9,7 @@ class InstrumentDataSource {
     // Entity information
     var name: String = ""
     var role: Role? = null
-    var area: String = ""
+    var subject: Subject? = null
     var entityName: String = ""
     var entityUrl: String = ""
     var entityIdentifier: String = ""
@@ -262,17 +263,30 @@ class InstrumentDataSource {
     // Evaluation
     private var evaluation: Map<String, Int> = mapOf()
 
+    private val roles = listOf(
+        Role("Control interno"),
+        Role("Líder de Proceso 1"),
+        Role("Responsable de compras y adquisiciones"),
+        Role("Responsable de la continuidad"),
+        Role("Responsable de SI"),
+        Role("Responsable de TICs"),
+    )
+
+    private val subjects = listOf(
+        Subject("Revisiones de seguridad de la información"),
+    )
+
     fun saveEntityInformation(
         name: String,
         role: Role,
-        area: String,
+        subject: Subject?,
         entityName: String,
         entityUrl: String,
         entityIdentifier: String
     ) {
         this.name = name
         this.role = role
-        this.area = area
+        this.subject = subject
         this.entityName = entityName
         this.entityUrl = entityUrl
         this.entityIdentifier = entityIdentifier
@@ -331,7 +345,7 @@ class InstrumentDataSource {
             entityInformation = EntityInformation(
                 name = name,
                 role = role,
-                area = area,
+                subject = subject,
                 entityName = entityName,
                 entityUrl = entityUrl,
                 entityIdentifier = entityIdentifier
@@ -357,5 +371,13 @@ class InstrumentDataSource {
             questionsAnswers = questionsAnswers,
             evaluation = evaluation
         )
+    }
+
+    fun getRoles(): List<Role> {
+        return roles
+    }
+
+    fun getSubjects(): List<Subject> {
+        return subjects
     }
 }

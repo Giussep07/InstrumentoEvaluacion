@@ -2,7 +2,7 @@ package com.giussepr.instrumentoevaluacion.questionsbyrole
 
 import androidx.lifecycle.ViewModel
 import com.giussepr.instrumentoevaluacion.data.InstrumentDataSource
-import com.giussepr.instrumentoevaluacion.information.Role
+import com.giussepr.instrumentoevaluacion.model.Role
 import com.giussepr.instrumentoevaluacion.uicomponents.TextFieldState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

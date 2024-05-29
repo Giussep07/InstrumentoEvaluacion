@@ -1,6 +1,7 @@
 package com.giussepr.instrumentoevaluacion.data
 
-import com.giussepr.instrumentoevaluacion.information.Role
+import com.giussepr.instrumentoevaluacion.model.Role
+import com.giussepr.instrumentoevaluacion.model.Subject
 import com.giussepr.instrumentoevaluacion.questionsbyrole.Question
 
 data class InstrumentData(
@@ -13,7 +14,7 @@ data class InstrumentData(
 data class EntityInformation(
     var name: String = "",
     var role: Role? = null,
-    var area: String = "",
+    var subject: Subject? = null,
     var entityName: String = "",
     var entityUrl: String = "",
     var entityIdentifier: String = "",

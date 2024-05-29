@@ -32,6 +32,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.giussepr.instrumentoevaluacion.model.Role
+import com.giussepr.instrumentoevaluacion.model.Subject
 import com.giussepr.instrumentoevaluacion.navigation.AppDirections
 import com.giussepr.instrumentoevaluacion.ui.theme.InstrumentoEvaluacionTheme
 import com.giussepr.instrumentoevaluacion.uicomponents.AppOutlinedTextField
@@ -45,6 +47,7 @@ fun InformationFormScreen(navController: NavHostController) {
     val state by viewModel.viewState.collectAsState()
 
     var isRoleExpanded by remember { mutableStateOf(false) }
+    var isSubjectExpanded by remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
 
     LaunchedEffect(Unit) {
@@ -102,7 +105,8 @@ fun InformationFormScreen(navController: NavHostController) {
                     focusManager.moveFocus(FocusDirection.Down)
                     isRoleExpanded = true
                 }),
-                textFieldState = state.nameTextFieldState
+                textFieldState = state.nameTextFieldState,
+                maxLength = 50
             )
             // Role
             AppSelector(
@@ -120,21 +124,19 @@ fun InformationFormScreen(navController: NavHostController) {
                 onDismissRequest = { isRoleExpanded = false }
             )
             // Area
-            AppOutlinedTextField(
+            AppSelector(
                 modifier = Modifier.fillMaxWidth(),
-                value = state.area,
-                onValueChange = {
-                    viewModel.onUiEvent(InformationScreenUiEvent.OnAreaChanged(it))
+                label = "Tema",
+                selectorItem = state.subject,
+                items = state.subjects,
+                onItemSelected = {
+                    viewModel.onUiEvent(InformationScreenUiEvent.OnSubjectSelected(it as Subject))
                 },
-                placeholder = "Area",
-                label = "Area",
-                textFieldState = state.areaTextFieldState,
-                maxLines = 1,
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Text,
-                    imeAction = ImeAction.Next
-                ),
-                keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }),
+                isError = state.subjectTextFieldState is TextFieldState.Error,
+                textFieldState = state.subjectTextFieldState,
+                isExpanded = isSubjectExpanded,
+                onExpandedChange = { isSubjectExpanded = it },
+                onDismissRequest = { isSubjectExpanded = false }
             )
             // Entity Name
             AppOutlinedTextField(
@@ -151,7 +153,8 @@ fun InformationFormScreen(navController: NavHostController) {
                     imeAction = ImeAction.Next
                 ),
                 keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }),
-                textFieldState = state.entityNameTextFieldState
+                textFieldState = state.entityNameTextFieldState,
+                maxLength = 50
             )
             // Entity URL
             AppOutlinedTextField(
@@ -168,7 +171,8 @@ fun InformationFormScreen(navController: NavHostController) {
                     imeAction = ImeAction.Next
                 ),
                 keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }),
-                textFieldState = state.entityUrlTextFieldState
+                textFieldState = state.entityUrlTextFieldState,
+                maxLength = 50
             )
             // Entity Identifier
             AppOutlinedTextField(
@@ -184,7 +188,8 @@ fun InformationFormScreen(navController: NavHostController) {
                     keyboardType = KeyboardType.Number,
                     imeAction = ImeAction.Done
                 ),
-                textFieldState = state.entityIdentifierTextFieldState
+                textFieldState = state.entityIdentifierTextFieldState,
+                maxLength = 10
             )
 
             Button(

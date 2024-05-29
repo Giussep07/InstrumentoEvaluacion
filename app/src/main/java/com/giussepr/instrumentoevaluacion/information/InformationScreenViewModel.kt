@@ -2,8 +2,9 @@ package com.giussepr.instrumentoevaluacion.information
 
 import androidx.lifecycle.ViewModel
 import com.giussepr.instrumentoevaluacion.data.InstrumentDataSource
+import com.giussepr.instrumentoevaluacion.model.Role
+import com.giussepr.instrumentoevaluacion.model.Subject
 import com.giussepr.instrumentoevaluacion.uicomponents.TextFieldState
-import com.giussepr.instrumentoevaluacion.uicomponents.selector.SelectorItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
@@ -18,27 +19,11 @@ class InformationScreenViewModel @Inject constructor(
         private set
 
     private fun getRoles() {
-        val roles = listOf(
-            Role("Control interno", "Control interno description"),
-            Role("Gestión humana", "Gestión humana description"),
-            Role("Líder de Proceso 1", "Líder de Proceso 1 description"),
-            Role("Líder de Proceso 2", "Líder de Proceso 2 description"),
-            Role("Líder de Proceso 3", "Líder de Proceso 3 description"),
-            Role(
-                "Responsable de compras y adquisiciones",
-                "Responsable de compras y adquisiciones description"
-            ),
-            Role("Responsable de la continuidad", "Responsable de la continuidad description"),
-            Role(
-                "Responsable de la seguridad física",
-                "Responsable de la seguridad física description"
-            ),
-            Role("Responsable de SI", "Responsable de SI description"),
-            Role("Responsable de TICs", "Responsable de TICs description"),
-            Role("Calidad", "Calidad description"),
-        )
         viewState.update {
-            it.copy(roles = roles)
+            it.copy(
+                roles = instrumentDataSource.getRoles(),
+                subjects = instrumentDataSource.getSubjects()
+            )
         }
     }
 
@@ -56,8 +41,8 @@ class InformationScreenViewModel @Inject constructor(
                 isFormValid = false
             }
 
-            if (area.isEmpty()) {
-                viewState.update { it.copy(areaTextFieldState = TextFieldState.Error("Area es requerido")) }
+            if (subject == null) {
+                viewState.update { it.copy(subjectTextFieldState = TextFieldState.Error("Tema es requerido")) }
                 isFormValid = false
             }
 
@@ -100,11 +85,11 @@ class InformationScreenViewModel @Inject constructor(
                 }
             }
 
-            is InformationScreenUiEvent.OnAreaChanged -> {
+            is InformationScreenUiEvent.OnSubjectSelected -> {
                 viewState.update {
                     it.copy(
-                        area = uiEvent.area,
-                        areaTextFieldState = TextFieldState.Default
+                        subject = uiEvent.subject,
+                        subjectTextFieldState = TextFieldState.Default
                     )
                 }
             }
@@ -150,7 +135,7 @@ class InformationScreenViewModel @Inject constructor(
                     instrumentDataSource.saveEntityInformation(
                         viewState.value.name,
                         viewState.value.role!!,
-                        viewState.value.area,
+                        viewState.value.subject!!,
                         viewState.value.entityName,
                         viewState.value.entityUrl,
                         viewState.value.entityIdentifier
@@ -170,14 +155,15 @@ class InformationScreenViewModel @Inject constructor(
 data class InformationScreenViewState(
     val name: String = "",
     val role: Role? = null,
-    val area: String = "",
+    val subject: Subject? = null,
     val entityName: String = "",
     val entityUrl: String = "",
     val entityIdentifier: String = "",
     val roles: List<Role> = emptyList(),
+    val subjects: List<Subject> = emptyList(),
     val nameTextFieldState: TextFieldState = TextFieldState.Default,
     val roleTextFieldState: TextFieldState = TextFieldState.Default,
-    val areaTextFieldState: TextFieldState = TextFieldState.Default,
+    val subjectTextFieldState: TextFieldState = TextFieldState.Default,
     val entityNameTextFieldState: TextFieldState = TextFieldState.Default,
     val entityUrlTextFieldState: TextFieldState = TextFieldState.Default,
     val entityIdentifierTextFieldState: TextFieldState = TextFieldState.Default,
@@ -188,19 +174,11 @@ data class InformationScreenViewState(
 sealed class InformationScreenUiEvent {
     data object GetRoles : InformationScreenUiEvent()
     data class OnNameChanged(val name: String) : InformationScreenUiEvent()
-    data class OnAreaChanged(val area: String) : InformationScreenUiEvent()
+    data class OnSubjectSelected(val subject: Subject) : InformationScreenUiEvent()
     data class OnEntityNameChanged(val entityName: String) : InformationScreenUiEvent()
     data class OnEntityUrlChanged(val entityUrl: String) : InformationScreenUiEvent()
     data class OnEntityIdentifierChanged(val entityIdentifier: String) : InformationScreenUiEvent()
     data class OnRoleSelected(val role: Role) : InformationScreenUiEvent()
     data object SaveInformation : InformationScreenUiEvent()
-    data object CompleteNavigation: InformationScreenUiEvent()
-}
-
-data class Role(
-    val name: String = "",
-    val description: String = ""
-) : SelectorItem {
-    override val text: String
-        get() = name
+    data object CompleteNavigation : InformationScreenUiEvent()
 }

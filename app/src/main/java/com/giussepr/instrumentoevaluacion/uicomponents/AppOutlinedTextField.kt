@@ -24,7 +24,8 @@ fun AppOutlinedTextField(
     maxLines: Int = 1,
     keyboardOptions: KeyboardOptions,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
-    textFieldState: TextFieldState
+    textFieldState: TextFieldState,
+    maxLength: Int? = null
 ) {
     val isPriceError = textFieldState is TextFieldState.Error
     val supportingTextComposable: @Composable (() -> Unit)? =
@@ -41,7 +42,13 @@ fun AppOutlinedTextField(
     OutlinedTextField(
         modifier = modifier,
         value = value,
-        onValueChange = onValueChange,
+        onValueChange = {
+            if (maxLength != null && it.length <= maxLength) {
+                onValueChange(it)
+            } else if (maxLength == null) {
+                onValueChange(it)
+            }
+        },
         placeholder = {
             Text(placeholder)
         },
