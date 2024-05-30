@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.giussepr.instrumentoevaluacion.data.InstrumentDataSource
 import com.giussepr.instrumentoevaluacion.model.Role
 import com.giussepr.instrumentoevaluacion.uicomponents.TextFieldState
+import com.giussepr.instrumentoevaluacion.uicomponents.selector.SelectorItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
@@ -21,7 +22,7 @@ class QuestionByRoleViewModel @Inject constructor(
         var isFormValid = true
 
         val questions = viewState.value.questions.map { question ->
-            if (question.answer.isEmpty()) {
+            if (question.answer == null) {
                 isFormValid = false
                 question.copy(questionTextFieldState = TextFieldState.Error("Campo requerido"))
             } else {
@@ -40,7 +41,7 @@ class QuestionByRoleViewModel @Inject constructor(
         return isFormValid
     }
 
-    private fun updateAnswer(question: Question, answer: String) {
+    private fun updateAnswer(question: Question, answer: Answer) {
         val updatedQuestions = viewState.value.questions.map {
             if (it.question == question.question) {
                 it.copy(answer = answer, questionTextFieldState = TextFieldState.Default)
@@ -85,18 +86,29 @@ data class QuestionByRoleViewState(
     var questions: MutableList<Question> = mutableListOf(),
     val role: Role? = null,
     val isFormValid: Boolean = false,
-    val navigationCompleted: Boolean = false
+    val navigationCompleted: Boolean = false,
+    var possibleAnswers: List<Answer> = listOf(
+        Answer("Si"),
+        Answer("No")
+    )
 )
 
 sealed class QuestionByRoleViewEvent {
     data object LoadRoles : QuestionByRoleViewEvent()
-    data class AnswerChanged(val question: Question, val answer: String) : QuestionByRoleViewEvent()
+    data class AnswerChanged(val question: Question, val answer: Answer) : QuestionByRoleViewEvent()
     data object SaveClicked : QuestionByRoleViewEvent()
     data object CompleteNavigation : QuestionByRoleViewEvent()
 }
 
 data class Question(
     val question: String,
-    var answer: String = "",
-    var questionTextFieldState: TextFieldState = TextFieldState.Default
+    var answer: Answer? = null,
+    var questionTextFieldState: TextFieldState = TextFieldState.Default,
 )
+
+data class Answer(
+    val answer: String
+) : SelectorItem {
+    override val text: String
+        get() = answer
+}

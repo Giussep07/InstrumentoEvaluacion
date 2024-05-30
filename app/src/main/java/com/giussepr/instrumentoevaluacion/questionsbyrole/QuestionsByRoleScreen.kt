@@ -6,8 +6,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -24,11 +24,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -38,7 +39,8 @@ import androidx.navigation.compose.rememberNavController
 import com.giussepr.instrumentoevaluacion.R
 import com.giussepr.instrumentoevaluacion.navigation.AppDirections
 import com.giussepr.instrumentoevaluacion.ui.theme.InstrumentoEvaluacionTheme
-import com.giussepr.instrumentoevaluacion.uicomponents.AppLabeledOutlinedTextField
+import com.giussepr.instrumentoevaluacion.uicomponents.TextFieldState
+import com.giussepr.instrumentoevaluacion.uicomponents.selector.AppSelector
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -106,21 +108,33 @@ fun QuestionsByRoleScreen(navController: NavHostController) {
                 style = MaterialTheme.typography.titleLarge,
             )
             state.questions.forEach { question: Question ->
-                AppLabeledOutlinedTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = question.answer,
-                    onValueChange = { value ->
-                        viewModel.onUiEvent(QuestionByRoleViewEvent.AnswerChanged(question, value))
-                    },
-                    placeholder = stringResource(id = R.string.answer),
-                    label = question.question,
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Text,
-                        imeAction = ImeAction.Done
-                    ),
-                    textFieldState = question.questionTextFieldState,
-                    maxLines = 5
-                )
+                var isAnswersExpanded by remember { mutableStateOf(false) }
+                Column(
+                    modifier = Modifier
+                ) {
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        text = question.question,
+                        style = MaterialTheme.typography.labelLarge,
+                    )
+                    Spacer(modifier = Modifier.size(4.dp))
+                    AppSelector(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        label = stringResource(id = R.string.answer),
+                        selectorItem = question.answer,
+                        items = state.possibleAnswers,
+                        onItemSelected = {
+                            viewModel.onUiEvent(QuestionByRoleViewEvent.AnswerChanged(question, it as Answer))
+                        },
+                        isError = question.questionTextFieldState is TextFieldState.Error,
+                        textFieldState = question.questionTextFieldState,
+                        isExpanded = isAnswersExpanded,
+                        onExpandedChange = { isAnswersExpanded = it },
+                        onDismissRequest = { isAnswersExpanded = false }
+                    )
+                }
             }
             // Save Button
             Button(

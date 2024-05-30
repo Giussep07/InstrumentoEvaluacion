@@ -49,9 +49,13 @@ class InstrumentDataSource {
             )
         ),
         Role.LIDER_DE_PROCESO_1 to listOf(
-            Question("Pregunta 1"),
-            Question("Pregunta 2"),
-            Question("Pregunta 3"),
+            Question("a) Desarrolla campañas, elaborar folletos y boletines?"),
+            Question("b) Los planes de toma de conciencia y comunicación, de las políticas de seguridad y privacidad de la información,  están aprobados y documentados, por la alta Dirección?"),
+            Question("c) Verifica que los nuevos empleados y contratistas son objeto de sensibilización en SI?."),
+            Question("d) Indaga cada cuanto o con que criterios se actualizan los programas de toma de conciencia?."),
+            Question("e) Verifica que en las evidencias se puede establecer los asistentes al programa y el tema impartido?."),
+            Question("f) Incluye en los temas de toma de conciencia los procedimientos básicos de seguridad de la información (tales como el reporte de incidentes de seguridad de la información) y los controles de línea base (tales como la seguridad de las contraseñas, los controles del software malicioso, y los escritorios limpios)."),
+            Question("g) Verifica de acuerdo a NIST que los funcionarios con roles privilegiados entienden sus responsabilidades y roles."),
         ),
         Role.RESPONSABLE_DE_COMPRAS_Y_ADQUISICIONES to listOf(
             Question(
